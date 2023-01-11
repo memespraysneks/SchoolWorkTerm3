@@ -1,0 +1,10 @@
+Bartender 8
+Cashier 10
+Dental Hygienist 5
+Insurance Adjuster 4
+Lawyer 3
+Librarian 9
+Postal Clerk 7
+Registered Nurse 1
+Social Worker 2
+Television announcer 6

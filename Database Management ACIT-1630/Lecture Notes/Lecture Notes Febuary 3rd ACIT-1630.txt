@@ -1,0 +1,24 @@
+Normal Forms
+
+Step 1: The Key...
+Step 2: The whole Key...
+Step 3: ...and nothing but the key
+
+Student(StudentNum(PK))
+Registration(StudentNum(FK), CourseNum(PK), Grade)
+
+step 1:
+full(emp_id(PK), dept_id(PK), job_id(pk), emp_last_name, emp_first_name, dept_name, job_name)
+
+step 2:
+emp(emp_id(PK), dept_id(FK), emp_last_name, emp_first_name) 
+dept(dept_id(PK), dept_name)
+job(job_id(PK), emp_id(FK , job_name)
+
+step 3:
+emp(emp_id(PK), dept_id(FK), emp_last_name, emp_first_name)
+dept(dept_id(PK), dept_name)
+job(job_id(PK), emp_id(FK), job_name)
+
+
+

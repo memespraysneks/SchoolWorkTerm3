@@ -1,0 +1,139 @@
+IPv6 Static Routing Report A01315336
+
+
+Traceroute web -> ws2
+
+traceroute to fd00:2000:0:2::1 (fd00:2000:0:2::1), 30 hops max, 80 byte packets
+ 1  fd00:2000:0:1::ffff  2.014 ms
+ 2  fd00:2000:0:ffff::2  2.809 ms
+ 3  fd00:2000:0:2::1  5.396 ms
+
+
+Traceroute ws1 -> ws2
+
+traceroute to fd00:2000:0:2::1 (fd00:2000:0:2::1), 30 hops max, 80 byte packets
+ 1  fd00:2000:0:1::ffff  3.227 ms
+ 2  fd00:2000:0:ffff::2  5.030 ms
+ 3  fd00:2000:0:2::1  9.697 ms
+
+
+r1 IPv6 Addresses
+
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 state UNKNOWN qlen 1000
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 state UP qlen 1000
+    inet6 fd00:2000:0:ffff::1/64 scope global noprefixroute 
+       valid_lft forever preferred_lft forever
+    inet6 fe80::8e4b:22d8:1f5d:6332/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+6: br0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 state UP qlen 1000
+    inet6 fd00:2000:0:1::ffff/64 scope global noprefixroute 
+       valid_lft forever preferred_lft forever
+    inet6 fe80::4b3b:4c20:3f9d:cf8a/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+
+
+r1 Bridge Info
+
+3: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 master br0 state forwarding priority 32 cost 100 
+4: enp0s9: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 master br0 state forwarding priority 32 cost 100 
+
+
+r1 IPv6 Routes
+
+::1 dev lo proto kernel metric 256 pref medium
+fd00:2000:0:1::/64 dev br0 proto kernel metric 425 pref medium
+fd00:2000:0:2::/64 via fd00:2000:0:ffff::2 dev enp0s3 proto static metric 103 pref medium
+fd00:2000:0:ffff::/64 dev enp0s3 proto kernel metric 103 pref medium
+fe80::/64 dev enp0s3 proto kernel metric 103 pref medium
+fe80::/64 dev br0 proto kernel metric 425 pref medium
+
+
+r2 IPv6 Addresses
+
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 state UNKNOWN qlen 1000
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 state UP qlen 1000
+    inet6 fd00:2000:0:ffff::2/64 scope global noprefixroute 
+       valid_lft forever preferred_lft forever
+    inet6 fe80::2fa9:1d6b:bebc:a47a/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+3: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 state UP qlen 1000
+    inet6 fd00:2000:0:2::ffff/64 scope global noprefixroute 
+       valid_lft forever preferred_lft forever
+    inet6 fe80::18fc:e00a:1d37:6493/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+
+
+r2 IPv6 Routes
+
+::1 dev lo proto kernel metric 256 pref medium
+fd00:2000:0:1::/64 via fd00:2000:0:ffff::1 dev enp0s3 proto static metric 102 pref medium
+fd00:2000:0:2::/64 dev enp0s8 proto kernel metric 101 pref medium
+fd00:2000:0:ffff::/64 dev enp0s3 proto kernel metric 102 pref medium
+fe80::/64 dev enp0s8 proto kernel metric 101 pref medium
+fe80::/64 dev enp0s3 proto kernel metric 102 pref medium
+
+
+web IPv6 Addresses
+
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 state UNKNOWN qlen 1000
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 state UP qlen 1000
+    inet6 fd00:2000:0:1::1/64 scope global noprefixroute 
+       valid_lft forever preferred_lft forever
+    inet6 fe80::ae90:ee5c:3343:d9bc/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+
+
+web IPv6 Routes
+
+::1 dev lo proto kernel metric 256 pref medium
+fd00:2000:0:1::/64 dev enp0s3 proto kernel metric 100 pref medium
+fe80::/64 dev enp0s3 proto kernel metric 100 pref medium
+default via fd00:2000:0:1::ffff dev enp0s3 proto static metric 100 pref medium
+
+
+ws1 IPv6 Addresses
+
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 state UNKNOWN qlen 1000
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 state UP qlen 1000
+    inet6 fd00:2000:0:1::2/64 scope global noprefixroute 
+       valid_lft forever preferred_lft forever
+    inet6 fe80::db85:782:5884:d915/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+
+
+ws1 IPv6 Routes
+
+::1 dev lo proto kernel metric 256 pref medium
+fd00:2000:0:1::/64 dev enp0s3 proto kernel metric 100 pref medium
+fe80::/64 dev enp0s3 proto kernel metric 100 pref medium
+default via fd00:2000:0:1::ffff dev enp0s3 proto static metric 100 pref medium
+
+
+ws2 IPv6 Addresses
+
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 state UNKNOWN qlen 1000
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 state UP qlen 1000
+    inet6 fd00:2000:0:2::1/64 scope global noprefixroute 
+       valid_lft forever preferred_lft forever
+    inet6 fe80::1d0f:7c89:3197:ae3c/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+
+
+ws2 IPv6 Routes
+
+::1 dev lo proto kernel metric 256 pref medium
+fd00:2000:0:2::/64 dev enp0s3 proto kernel metric 100 pref medium
+fe80::/64 dev enp0s3 proto kernel metric 100 pref medium
+default via fd00:2000:0:2::ffff dev enp0s3 proto static metric 100 pref medium
+
+UID:0xf44ee3d6b8bf

@@ -1,0 +1,3 @@
+process is a resource owner
+thread is not, it is part of a process
+processes are made of threads

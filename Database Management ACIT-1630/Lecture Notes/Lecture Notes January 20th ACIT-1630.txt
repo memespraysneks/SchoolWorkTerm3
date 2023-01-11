@@ -1,0 +1,29 @@
+In order to log into the SQL server
+
+Change to SQL verification
+Login: sa
+Password: bcitsql
+
+Basic SQL commands
+
+--comment: allows you to input a comment
+
+create database (database name): creates a new database
+
+go: complete all code above before continue on below 
+
+use (database name): starts using whatever database you specified
+
+create table (table name): creates a new table
+-syntax: line after the create table line must be an open bracket, after all attributes made must be ending bracket on new line.
+-syntax: each attribute must be on a seperate line each line leading into a new attribute must end with a comma
+
+(attribute) (data type) (key): creates a new attribute with a set data type and if needed key type
+
+drop table (table name): Gets rid of a table of a certain name used in order to fix attribute mistakes
+
+insert into (table name): inserts a new row into a table
+-syntax: line after must be values()
+-syntax: must be in single quotes not double quotes
+
+select * from (table name): shows all data stored in the table of table name

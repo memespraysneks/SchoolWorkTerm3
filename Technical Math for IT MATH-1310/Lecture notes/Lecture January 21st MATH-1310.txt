@@ -1,0 +1,66 @@
+Converting to/from 2C:
+
+Decimal to 2C:
+if positive: 
+-convert to unsigned binary pad with 0's if needed
+
+if negative: 
+-first take the absolute value to usigned binary pad with 0's if needed
+-flip the bits (all 0's to 1's all 1's to 0's)
+-add 1
+
+2C to Decimal:
+if positive:
+-convert to decimal
+
+if negative:
+-flip the bits
+-add 1
+-convert to decimal
+-add a negative (times by -1)
+
+2^n-1 representation (biased representation)
+
+-complementing the left most bit of a two's complement bit
+-in biased representation some fixed integer b is added to every signed decimal integer before it is coded in binary
+-bias = 2^n-1
+
+To convert decimal to bias B 
+1: added the bias
+2: convert to unsigned binary
+3: pad with 0's if needed
+
+IEEE single precision standard:
+
+the first bit holds the sign
+next 8 bits hold the exponent
+the last 23 bits hold the mantisa
+(held in bias 127)
+
+IEEE double precision standard
+
+the first bit holds the sign
+next 11 for the exponent
+remaining 52 for the mantisa
+(held in bias 1023)
+
+if the exponents are all 0's and the mantisa is all 0's 
+that is 0
+
+if the exponents is all 1's and the mantisa is all 0's 
+that is infinity
+
+if the exponents are all 1's and the mantisa is not all 0's 
+that is NaN (Not a Number)
+
+if the exponents are all 0's and the mantisa is not all 0's
+that is 0.(number) rather than normally it would be 1.(number)
+
+MATH 1310 FLOATING POINT FORMAT
+
+1 bit for the sign
+4 bits for the exponent in bias/excess 7
+5 bits for the mantissa
+
+if the exponent = 0000 and the mantissa does not equal 00000 then the exponent is assumed to be -6
+

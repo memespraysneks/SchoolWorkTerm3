@@ -1,0 +1,71 @@
+Query 1:
+
+create database Lesson3
+
+Query 2:
+
+use Lesson3
+go
+
+
+
+create table Buses
+(
+	BusID char(10) primary key,
+	Capacity char(10),
+	Engine char(10)
+)
+
+create table Passengers
+(
+	PassengerID char(10) primary key,
+	LastName	char(10),
+	FirstName	char(10),
+	[Address]	char(10)
+)
+
+Query 3:
+
+use Lesson3
+go
+
+create table BusesPassengers
+(
+	BoardingID	char(10) primary key,
+	BusID		char(10) foreign key references Buses,
+	PassengerID	char(10) foreign key references Passengers,
+	GetOnBoard	char(10),
+	DepartBus	char(10)
+)
+
+Query 4:
+
+use Lesson3
+go
+
+insert into Buses
+	values('Bus01', '50', 'Electric')
+
+Query 5:
+
+use Lesson3
+go
+
+insert into Buses
+	values('Bus02', '70', 'Gas')
+
+Query 6:
+
+use Lesson3
+go
+
+select * from Buses
+
+Query 7:
+
+use Lesson3
+go
+
+insert into Passengers
+	values('Pass01', 'Cao', 'Benny', '123Jiggly'),
+	('Pass02', 'Soup', 'Cat', '293oops')

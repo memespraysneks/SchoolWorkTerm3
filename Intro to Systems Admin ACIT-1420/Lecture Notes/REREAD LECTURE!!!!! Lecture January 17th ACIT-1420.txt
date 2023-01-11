@@ -1,0 +1,15 @@
+Lossless compression identifies patterns and sets shortcuts that the program can use to store more bits.
+
+The seven major components of a computer are:
+-CPU
+-GPU
+-Storage
+-MotherBoard
+-RAM
+-IO Device
+-Power Supply
+
+Motherboard Functions as the central backbone to connect all other components, responsible for power distribution, used to load and contain the BIOS.
+
+South Bridge connects to the I/O device and is called the I/O Manager
+

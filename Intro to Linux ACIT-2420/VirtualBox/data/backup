@@ -1,0 +1,60 @@
+#!/bin/bash
+#: Title       : backup
+#: Date        : Oct 28 2022
+#: Author      : Caleb Seeman
+#: Version     : 1.0
+#: Description : backup a given directory to a specific location
+#: Options     : -n name the backup file, -d list directories to be backed up, -b where to keep the backup file, -h help
+
+DESTINATION_DIR=$HOME/backup
+DIRECTORIES_TO_BACKUP=''
+DATE=$(date "+%F-%T")
+BACKUP="backup_"
+FILENAME=${BACKUP}${DATE}
+
+dirmake() {
+if [[ ! -d $DESTINATION_DIR ]]; then
+    mkdir $DESTINATION_DIR;
+fi
+}
+
+filename() {
+if [[ -f "${DESTINATION_DIR}/${FILENAME}" ]]; then
+  echo $FILENAME already exists, please use a different name, please try again
+  exit 1
+fi
+}
+
+	
+while getopts ":d:b:n:R:h" OPT; do
+  case "${OPT}" in
+    d)
+      DIRECTORIES_TO_BACKUP+=$OPTARG" "
+      ;;
+    b)
+      DESTINATION_DIR=${OPTARG}
+      dirmake
+      ;;
+    n)
+      FILENAME=${OPTARG}
+      filename
+      ;;
+    R)
+      xz -d $2 
+      tar xvf ${2::-3} -C $3
+      exit 0
+      ;;
+    *|h)
+      echo Overview: This utility will create a backup of given directories
+      echo Synopsis: backup [options]
+      echo Options: The following are options
+      echo d: to specify which directories to backup e.x. -d [directory to be backed up]
+      echo b: to specify the backup location e.x. -b [name of backup directory]
+      echo n: to specify the name of the backup file e.x. -n [backup file name] 
+    esac
+done
+shift $(( OPTIND - 1 ))
+dirmake
+
+tar -czf "${DESTINATION_DIR}/${FILENAME}.tar.gz" $DIRECTORIES_TO_BACKUP
+xz -c ${DESTINATION_DIR}"/${FILENAME}.tar.gz" > "${DESTINATION_DIR}/${FILENAME}.xz"

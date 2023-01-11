@@ -1,0 +1,29 @@
+#!/bin/bash
+#Title: Space Left
+#Date: Oct 28 2022
+#Author: Caleb Seeman
+#Version: 1.0
+#Description: Given a set directory check if it is mounted and if so how much space is left
+#Options: -h help
+
+while getopts :h opts; do
+  case ${opts} in
+    *|h)
+      echo Overview: This utility checks if a given file system is mounted and if so how much space is left
+      echo Synopsis: spaceLeft [file system to be checked]
+      echo Options: This utility has no options outside of -h for help
+      exit
+  esac
+done
+
+if [ $# == 0 ]; then
+  echo Please enter a directory
+  exit 1
+fi
+
+if findmnt $1 > /dev/null 2>&1; then
+  df -h $1 | awk 'FNR==2{print $1 " is " $5 " used with "  $4 " free."}'
+else
+  echo "Device or File System is not mounted"
+  exit 0
+fi

@@ -1,0 +1,4 @@
+Github was created by Linus Torvalds for assistance with the Linux Kernel.
+
+Git works essentially as a save file holder. You are able to store as many saves as you want and go back to any of them at any time to restore files.
+

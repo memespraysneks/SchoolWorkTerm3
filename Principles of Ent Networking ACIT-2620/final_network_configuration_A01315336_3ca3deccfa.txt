@@ -1,0 +1,415 @@
+Final Network Configuration A01315336
+
+
+r3 Info
+NIC 1:                       MAC: 020000000010
+ Attachment: Host-only Interface 'VirtualBox Host-Only Ethernet Adapter #2'
+ Cable connected: on
+ Trace: off (file: none)
+ Type: virtio
+ Reported speed: 0 Mbps
+ Boot priority: 0
+ Promisc Policy: allow-all
+ Bandwidth group: none
+
+NIC 2:                       MAC: 0800271A88EA
+ Attachment: Internal Network 'finalnet'
+ Cable connected: on
+ Trace: off (file: none)
+ Type: 82540EM
+ Reported speed: 0 Mbps
+ Boot priority: 0
+ Promisc Policy: allow-all
+ Bandwidth group: none
+
+NIC 3:                       disabled
+
+NIC 4:                       disabled
+
+NIC 5:                       disabled
+
+NIC 6:                       disabled
+
+NIC 7:                       disabled
+
+NIC 8:                       disabled
+
+pc1 Info
+NIC 1:                       MAC: 020000000011
+ Attachment: Internal Network 'finalnet'
+ Cable connected: on
+ Trace: off (file: none)
+ Type: virtio
+ Reported speed: 0 Mbps
+ Boot priority: 0
+ Promisc Policy: deny
+ Bandwidth group: none
+
+NIC 2:                       disabled
+
+NIC 3:                       disabled
+
+NIC 4:                       disabled
+
+NIC 5:                       disabled
+
+NIC 6:                       disabled
+
+NIC 7:                       disabled
+
+NIC 8:                       disabled
+
+pc2 Info
+NIC 1:                       MAC: 020000000012
+ Attachment: Internal Network 'finalnet'
+ Cable connected: on
+ Trace: off (file: none)
+ Type: virtio
+ Reported speed: 0 Mbps
+ Boot priority: 0
+ Promisc Policy: deny
+ Bandwidth group: none
+
+NIC 2:                       disabled
+
+NIC 3:                       disabled
+
+NIC 4:                       disabled
+
+NIC 5:                       disabled
+
+NIC 6:                       disabled
+
+NIC 7:                       disabled
+
+NIC 8:                       disabled
+
+r3 IPv4 Address
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 10.20.30.1/24 brd 10.20.30.255 scope global noprefixroute enp0s3
+       valid_lft forever preferred_lft forever
+3: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 10.0.25.158/27 brd 10.0.25.159 scope global noprefixroute enp0s8
+       valid_lft forever preferred_lft forever
+
+
+r3 IPv4 Routes
+10.0.25.128/27 dev enp0s8 proto kernel scope link src 10.0.25.158 metric 101 
+10.20.30.0/24 dev enp0s3 proto kernel scope link src 10.20.30.1 metric 102 
+
+
+r3 r3 DHCP configuration
+#
+# DHCP Server Configuration file.
+#   see /usr/share/doc/dhcp-server/dhcpd.conf.example
+#   see dhcpd.conf(5) man page
+#
+option domain-name "2620.acit";
+option domain-name-servers 10.20.30.1, 8.8.8.8;
+
+subnet 10.0.25.128 netmask 255.255.255.224 {
+	option routers 10.0.25.158;
+	range 10.0.25.129 10.0.25.157;
+}
+
+host pc1 {
+	hardware ethernet 02:00:00:00:00:11;
+	fixed-address 10.0.25.129;
+}
+
+host pc2 {
+	hardware ethernet 02:00:00:00:00:12;
+	fixed-address 10.0.25.130;
+}
+
+
+r3 r3 BIRD configuration
+# This is a basic configuration file, which contains boilerplate options and
+# some basic examples. It allows the BIRD daemon to start but will not cause
+# anything else to happen.
+#
+# Please refer to the BIRD User's Guide documentation, which is also available
+# online at http://bird.network.cz/ in HTML format, for more information on
+# configuring BIRD and adding routing protocols.
+
+# Configure logging
+log syslog all;
+# log "/var/log/bird.log" { debug, trace, info, remote, warning, error, auth, fatal, bug };
+
+# Set router ID. It is a unique identification of your router, usually one of
+# IPv4 addresses of the router. It is recommended to configure it explicitly.
+router id 10.20.30.1;
+
+# Turn on global debugging of all protocols (all messages or just selected classes)
+# debug protocols all;
+# debug protocols { events, states };
+
+# Turn on internal watchdog
+# watchdog warning 5 s;
+# watchdog timeout 30 s;
+
+# You can define your own constants
+# define my_asn = 65000;
+# define my_addr = 198.51.100.1;
+
+# Tables master4 and master6 are defined by default
+# ipv4 table master4;
+# ipv6 table master6;
+
+# Define more tables, e.g. for policy routing or as MRIB
+# ipv4 table mrib4;
+# ipv6 table mrib6;
+
+# The Device protocol is not a real routing protocol. It does not generate any
+# routes and it only serves as a module for getting information about network
+# interfaces from the kernel. It is necessary in almost any configuration.
+protocol device {
+}
+
+# The direct protocol is not a real routing protocol. It automatically generates
+# direct routes to all network interfaces. Can exist in as many instances as you
+# wish if you want to populate multiple routing tables with direct routes.
+protocol direct {
+	disabled;		# Disable by default
+	ipv4;			# Connect to default IPv4 table
+	ipv6;			# ... and to default IPv6 table
+}
+
+# The Kernel protocol is not a real routing protocol. Instead of communicating
+# with other routers in the network, it performs synchronization of BIRD
+# routing tables with the OS kernel. One instance per table.
+protocol kernel {
+	ipv4 {			# Connect protocol to IPv4 table by channel
+#	      table master4;	# Default IPv4 table is master4
+#	      import all;	# Import to table, default is import all
+	      export all;	# Export to protocol. default is export none
+	};
+#	learn;			# Learn alien routes from the kernel
+#	kernel table 10;	# Kernel table to synchronize with (default: main)
+}
+
+# Another instance for IPv6, skipping default options
+protocol kernel {
+	ipv6 { export all; };
+}
+
+# Static routes (Again, there can be multiple instances, for different address
+# families and to disable/enable various groups of static routes on the fly).
+protocol static {
+	ipv4;			# Again, IPv4 channel with default options
+
+#	route 0.0.0.0/0 via 198.51.100.10;
+#	route 192.0.2.0/24 blackhole;
+#	route 10.0.0.0/8 unreachable;
+#	route 10.2.0.0/24 via "eth0";
+#	# Static routes can be defined with optional attributes
+#	route 10.1.1.0/24 via 198.51.100.3 { rip_metric = 3; };
+#	route 10.1.2.0/24 via 198.51.100.3 { ospf_metric1 = 100; };
+#	route 10.1.3.0/24 via 198.51.100.4 { ospf_metric2 = 100; };
+}
+
+# Pipe protocol connects two routing tables. Beware of loops.
+# protocol pipe {
+#	table master4;		# No ipv4/ipv6 channel definition like in other protocols
+#	peer table mrib4;
+#	import all;		# Direction peer table -> table
+#	export all;		# Direction table -> peer table
+# }
+
+# RIP example, both RIP and RIPng are supported
+# protocol rip {
+#	ipv4 {
+#		# Export direct, static routes and ones from RIP itself
+#		import all;
+#		export where source ~ [ RTS_DEVICE, RTS_STATIC, RTS_RIP ];
+#	};
+#	interface "eth*" {
+#	  	update time 10;			# Default period is 30
+#		timeout time 60;		# Default timeout is 180
+#		authentication cryptographic;	# No authentication by default
+#		password "hello" { algorithm hmac sha256; }; # Default is MD5
+#	};
+# }
+
+# OSPF example, both OSPFv2 and OSPFv3 are supported
+protocol ospf v3 {
+	area 0 {
+		interface "enp0s3" {
+			
+		};
+		interface "enp0s8" {
+			stub;
+		};
+		interface "enp0s9" {
+			stub;
+		};
+	};
+}
+#  	ipv6 {
+#		import all;
+#		export where source = RTS_STATIC;
+#	};
+#	area 0 {
+#		interface "eth*" {
+#			type broadcast;		# Detected by default
+#			cost 10;		# Interface metric
+#			hello 5;		# Default hello perid 10 is too long
+#		};
+#		interface "tun*" {
+#			type ptp;		# PtP mode, avoids DR selection
+#			cost 100;		# Interface metric
+#			hello 5;		# Default hello perid 10 is too long
+#		};
+#		interface "dummy0" {
+#			stub;			# Stub interface, just propagate it
+#		};
+#	};
+#}
+
+# Define simple filter as an example for BGP import filter
+# See https://gitlab.labs.nic.cz/labs/bird/wikis/BGP_filtering for more examples
+# filter rt_import
+# {
+#	if bgp_path.first != 64496 then accept;
+#	if bgp_path.len > 64 then accept;
+#	if bgp_next_hop != from then accept;
+#	reject;
+# }
+
+# BGP example, explicit name 'uplink1' is used instead of default 'bgp1'
+# protocol bgp uplink1 {
+#	description "My BGP uplink";
+#	local 198.51.100.1 as 65000;
+#	neighbor 198.51.100.10 as 64496;
+#	hold time 90;		# Default is 240
+#	password "secret";	# Password used for MD5 authentication
+#
+#	ipv4 {			# regular IPv4 unicast (1/1)
+#		import filter rt_import;
+#		export where source ~ [ RTS_STATIC, RTS_BGP ];
+#	};
+#
+#	ipv6 {			# regular IPv6 unicast (2/1)
+#		import filter rt_import;
+#		export filter {	# The same as 'where' expression above
+#			if source ~ [ RTS_STATIC, RTS_BGP ]
+#			then accept;
+#			else reject;
+#		};
+#	};
+#
+#	ipv4 multicast {	# IPv4 multicast topology (1/2)
+#		table mrib4;	# explicit IPv4 table
+#		import filter rt_import;
+#		export all;
+#	};
+#
+#	ipv6 multicast {	# IPv6 multicast topology (2/2)
+#		table mrib6;	# explicit IPv6 table
+#		import filter rt_import;
+#		export all;
+#	};
+#}
+
+# Template example. Using templates to define IBGP route reflector clients.
+# template bgp rr_clients {
+#	local 10.0.0.1 as 65000;
+#	neighbor as 65000;
+#	rr client;
+#	rr cluster id 1.0.0.1;
+#
+#	ipv4 {
+#		import all;
+#		export where source = RTS_BGP;
+#	};
+#
+#	ipv6 {
+#		import all;
+#		export where source = RTS_BGP;
+#	};
+# }
+#
+# protocol bgp client1 from rr_clients {
+#	neighbor 10.0.1.1;
+# }
+#
+# protocol bgp client2 from rr_clients {
+#	neighbor 10.0.2.1;
+# }
+#
+# protocol bgp client3 from rr_clients {
+#	neighbor 10.0.3.1;
+# }
+
+
+pc1 IPv4 Address
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 10.0.25.129/27 brd 10.0.25.159 scope global dynamic noprefixroute enp0s3
+       valid_lft 39403sec preferred_lft 39403sec
+
+
+pc1 IPv4 Routes
+default via 10.0.25.158 dev enp0s3 proto dhcp metric 100 
+10.0.25.128/27 dev enp0s3 proto kernel scope link src 10.0.25.129 metric 100 
+
+
+pc2 IPv4 Address
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 10.0.25.130/27 brd 10.0.25.159 scope global dynamic noprefixroute enp0s3
+       valid_lft 39392sec preferred_lft 39392sec
+
+
+pc2 IPv4 Routes
+default via 10.0.25.158 dev enp0s3 proto dhcp metric 100 
+10.0.25.128/27 dev enp0s3 proto kernel scope link src 10.0.25.130 metric 100 
+
+
+pc1 Traceroute to web
+traceroute to 10.0.100.1 (10.0.100.1), 30 hops max, 60 byte packets
+ 1  10.0.25.158  1.874 ms !N  1.030 ms !N *
+
+
+pc2 Traceroute to ws1
+traceroute to 10.0.100.2 (10.0.100.2), 30 hops max, 60 byte packets
+ 1  10.0.25.158  2.634 ms !N  2.025 ms !N *
+
+
+r3 dhcpd log
+-- Logs begin at Fri 2022-12-09 02:42:31 PST, end at Fri 2022-12-09 11:08:24 PST. --
+Dec 09 02:43:22 base systemd[1]: Starting DHCPv4 Server Daemon...
+Dec 09 02:43:23 base dhcpd[767]: Internet Systems Consortium DHCP Server 4.3.6
+Dec 09 02:43:23 base dhcpd[767]: Copyright 2004-2017 Internet Systems Consortium.
+Dec 09 02:43:23 base dhcpd[767]: All rights reserved.
+Dec 09 02:43:23 base dhcpd[767]: For info, please visit https://www.isc.org/software/dhcp/
+Dec 09 02:43:23 base dhcpd[767]: ldap_gssapi_principal is not set,GSSAPI Authentication for LDAP will not be used
+Dec 09 02:43:24 base dhcpd[767]: Not searching LDAP since ldap-server, ldap-port and ldap-base-dn were not specified in the config file
+Dec 09 02:43:24 base dhcpd[767]: Config file: /etc/dhcp/dhcpd.conf
+Dec 09 02:43:24 base dhcpd[767]: Database file: /var/lib/dhcpd/dhcpd.leases
+Dec 09 02:43:24 base dhcpd[767]: PID file: /var/run/dhcpd.pid
+Dec 09 02:43:24 base dhcpd[767]: Source compiled to use binary-leases
+Dec 09 02:43:24 base dhcpd[767]: Wrote 0 deleted host decls to leases file.
+Dec 09 02:43:24 base dhcpd[767]: Wrote 0 new dynamic host decls to leases file.
+Dec 09 02:43:24 base dhcpd[767]: Wrote 0 leases to leases file.
+Dec 09 02:43:24 base dhcpd[767]: Listening on LPF/enp0s8/08:00:27:1a:88:ea/10.0.25.128/27
+Dec 09 02:43:24 base dhcpd[767]: Sending on   LPF/enp0s8/08:00:27:1a:88:ea/10.0.25.128/27
+Dec 09 02:43:24 base dhcpd[767]: 
+Dec 09 02:43:24 base dhcpd[767]: No subnet declaration for enp0s3 (10.20.30.101).
+Dec 09 02:43:24 base dhcpd[767]: ** Ignoring requests on enp0s3.  If this is not what
+Dec 09 02:43:24 base dhcpd[767]:    you want, please write a subnet declaration
+Dec 09 02:43:24 base dhcpd[767]:    in your dhcpd.conf file for the network segment
+Dec 09 02:43:24 base dhcpd[767]:    to which interface enp0s3 is attached. **
+Dec 09 02:43:24 base dhcpd[767]: 
+Dec 09 02:43:24 base dhcpd[767]: Sending on   Socket/fallback/fallback-net
+Dec 09 02:43:24 base dhcpd[767]: Server starting service.
+Dec 09 02:43:24 base systemd[1]: Started DHCPv4 Server Daemon.
+
+UID:0xf44ee3d6b8bf

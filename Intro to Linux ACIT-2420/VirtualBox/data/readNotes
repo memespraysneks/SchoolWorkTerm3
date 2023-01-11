@@ -1,0 +1,105 @@
+#!/bin/bash
+#: Title       : search notes
+#: Date        : Oct 28 2022
+#: Author      : Caleb Seeman
+#: Version     : 1.0
+#: Description : use tags and titles to search and return notes
+#: Options     : -r read, -t tags, -T title, -d date, -h help
+
+### Step 1 ###
+#Utility is called along with the option they would like to search for i.e. searchNotes -t animals
+
+SEARCH_DIR=$HOME/notes
+TAG_SEARCH=""
+TITLE_SEARCH=""
+DATE_SEARCH=""
+READ_NOTE="FALSE"
+
+while getopts :t:T:d:h opt; do
+  case "${opt}" in
+    t)
+      TAG_SEARCH=${OPTARG}
+      ;;
+    T)
+      TITLE_SEARCH=${OPTARG}
+      ;;
+    d)
+      DATE_SEARCH=${OPTARG}
+      ;;
+    h)
+      echo Overview: This utility allows you to read specific notes, or search for notes using tags, titles, and dates.
+      echo Synopsis: readNotes [options]
+      echo Options: Possible options are
+      echo t: search by tag e.x. readNotes -t [tag to search goes here]
+      echo T: search by title e.x. readNotes -T [title to search goes here]
+      echo d: search by date e.x. readNotes -d [date to search goes here]
+      exit
+      ;;
+  esac
+done
+
+
+if [ $TAG_SEARCH != "" ]
+  then
+    clear
+        echo "Here are the results for $TAG_SEARCH:"
+        echo "*************************************"
+        for FILE in ${SEARCH_DIR}/*
+        do
+                finalLine="$(awk 'END{print}' $FILE)"
+                for word in $finalLine
+                do
+                        if [ ${word,,} == "${TAG_SEARCH,,}" ]
+                        then
+                                echo $FILE
+                        fi
+                done
+        done
+        echo "*************************************"
+        echo "If there are no files present, exit with ctrl + c"
+        read -p "Enter the entire note path of the note to read(e.g. ./path/notes/name.txt): " note
+        clear
+        echo "Note content of $FILE"
+        echo "*************************************"
+        cat "$note"
+        echo "*************************************"
+elif [ $TITLE_SEARCH != "" ]
+  then
+    clear
+        echo "Here are the results for $TITLE_SEARCH:"
+        echo "***************************************"
+        find . -name "*$TITLE_SEARCH*.txt"
+        echo "***************************************"
+        echo "If there are no files present, exit with ctrl + c"
+        read -p "Enter the entire note path of the note to read(e.g. ./path/notes/name.txt): " note
+        clear
+        echo "Note content of $TITLE_SEARCH.txt"
+        echo "***************************************"
+        cat "$note"
+        echo "***************************************"
+elif [ $DATE_SEARCH != "" ]
+  then
+    clear
+        echo "Here are the results for $DATE_SEARCH:"
+        echo "**************************************"
+        for FILE in ${SEARCH_DIR}/*
+        do
+                firstLine="$(awk 'NR==1{print $0}' $FILE)"
+                if [ $firstLine != "" ]
+                then
+                        if [ $DATE_SEARCH == $firstLine ]
+                        then
+                        echo $FILE
+                        fi
+                fi
+        done
+        echo "**************************************"
+        read -p "Enter the entire note path of the note to read(e.g. ./path/notes/name.txt): " note
+        clear
+        echo "Note content of $FILE"
+        echo "**************************************"
+        cat "$note"
+        echo "**************************************"
+fi
+
+exit  

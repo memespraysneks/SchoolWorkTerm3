@@ -1,0 +1,21 @@
+if you have the same variable in two statments you can take out the repeated statment
+
+example: (z+x) * (z+y) = z + (x*y)
+
+example 2: z U (x n y) = (z U x) n (z U y)e
+
+SOP sum of all products:
+
+collect data given and take all of the 1's and add them 
+
+example
+
+x y F
+0 0 1
+0 1 0
+1 0 1
+1 1 0
+
+would be: 
+
+F = x'y'+xy'

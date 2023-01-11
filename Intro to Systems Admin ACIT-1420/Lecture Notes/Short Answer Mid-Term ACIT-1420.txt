@@ -1,0 +1,47 @@
+Short Answer Questions:
+
+1. Lossey vs. Loss-less compression?
+
+-Both lose data on compression however Loss-less restores it closer to the original state and in most cases is indistinguishable for human eye
+
+2. Compare the User Mode vs Kernel Mode?
+
+3. Compare Process and Thread (Provide definetions)
+
+-Process is the resource owner
+
+4. MBR Boot Process
+
+5. 7 major compenents of the PC explain each one
+
+-CPU
+
+-GPU
+
+-I/O Device
+
+-Motherboard
+
+-Power Supply
+
+-Storage
+
+-Memory
+
+6. Instruction OP code
+
+7. Services Provided by OS (List and explain them)
+
+-Resource management
+
+-File system manipulation
+
+-Protection
+
+-Error Detection
+
+-Communication
+
+-I/O Operation
+
+-Program Execution

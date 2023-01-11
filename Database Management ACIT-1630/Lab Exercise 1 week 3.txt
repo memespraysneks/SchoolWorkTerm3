@@ -1,0 +1,92 @@
+Query 1:
+
+create database CompanyDatabase
+
+Query 2:
+
+use CompanyDatabase
+go
+
+create table Departments
+(
+	DNO char(10) primary key,
+	DName char(10),
+	Budget char(10)
+)
+
+Query 3:
+
+use CompanyDatabase
+go
+
+create table Employees
+(
+	SSN char(10) primary key,
+	Salary char(10),
+	Phone char(10),
+	DNO char(10) foreign key references Departments
+)
+
+
+Query 4:
+
+use CompanyDatabase
+go
+
+create table ChildrenOfEmployees
+(
+	[Name] char(10) primary key,
+	Age char(10),
+	SSN char(10) foreign key references Employees
+)
+
+Query 5:
+
+use CompanyDatabase
+go
+
+insert into Departments
+	values('Dep01', 'Finance', '$300k'),
+	('Dep02', 'Marketing', '$150k'),
+	('Dep03', 'HR', '$20')
+
+Query 6:
+
+use CompanyDatabase
+go
+
+insert into Employees
+	values('SSN001', '$50k', '6046046046', 'Dep02'),
+	('SSN002', '$20k', '7782513827', 'Dep03'),
+	('SSN003', '$100k', '6046046046', 'Dep01')
+
+Query 7:
+
+use CompanyDatabase
+go
+
+insert into ChildrenOfEmployees
+	values('Lisa', '11', 'SSN001'),
+	('Tony', '14', 'SSN001'),
+	('Andrew', '8', 'SSN003')
+
+Query 8:
+
+use CompanyDatabase
+go
+
+select * from Departments
+
+Query 9:
+
+use CompanyDatabase
+go
+
+select * from Employees
+
+Query 10:
+
+use CompanyDatabase
+go
+
+select * from ChildrenOfEmployees

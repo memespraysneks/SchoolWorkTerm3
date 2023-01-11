@@ -1,0 +1,46 @@
+#!/bin/bash
+#: Title       : Create Notes
+#: Date        : Oct 27 2022
+#: Author      : Caleb Seeman
+#: Version     : 1.0
+#: Description : File Containing the Create Notes code!
+#: Options     : -h help
+
+DEFAULT_DIR=$HOME/notes
+
+while getopts :h opts; do
+  case "${opts}" in
+    *|h)
+      echo Overview: This app creates notes as you type
+      echo Synopsis: createNotes
+      echo Options: This utility has no options outside of the -h option help
+      exit
+      ;;
+  esac
+done
+
+if [[ ! -d "$HOME/notes" ]]
+then
+  mkdir "$HOME/notes"
+fi
+
+read -p "Enter a title for your note (don't use spaces): " title
+touch "$HOME/notes/$title.txt"
+
+echo `date +%m-%d-%y` >> "$HOME/notes/$title.txt"
+clear
+
+echo "Enter your note line by line, end with ctrl+d."
+
+while IFS= read -r line; do
+  echo "${line}" >> "$HOME/notes/$title.txt"
+  clear
+  echo "Enter your next line. ctrl+d to exit."
+done
+
+read -p "Enter searchable tags separated by spaces (You don't have to type anything): " tags
+echo "tags: $tags" >> "$HOME/notes/$title.txt"
+
+clear
+echo "createNote is done"
+exit

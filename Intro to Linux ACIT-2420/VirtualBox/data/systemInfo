@@ -1,0 +1,81 @@
+#!/bin/bash
+#: Title       : system info
+#: Date        : Oct 28 2022
+#: Author      : Caleb Seeman
+#: Version     : 1.0
+#: Description : Return system info to the user
+#: Options     : -p linux penguin ASCII, -h help
+
+### Step 1 ###
+#hostname = host name
+#whoami = user nam
+#uptime -p = uptime
+#grep /etc/os-release = version info
+#uname -r = kernal release
+#$SHELL = login shell
+#grep MemAvailable /proc/meminfo = memory left
+#egrep "Cached" /proc/meminfo | awk 'FNR ==1 {print$2}' = memory free
+varp=""
+
+while getopts :hp opt; do
+  case ${opt} in
+    h)
+      echo "Name: System Info"
+      echo "Synopsis: systemInfo [options]"
+      echo "Available options: -p for a ascii of tux with your info"
+      exit
+      ;; 
+    p)  
+      varp="tux"
+      shift
+      ;;
+    *|?)
+      echo "No such option exists"
+      echo "Valid options are"
+      echo "-p for a ascii of tux with your info"
+      echo "-h for a help page"
+      exit
+      ;;
+  esac
+done
+
+HOST_NAME=$(hostname)
+USER_NAME=$(whoami)
+UPTIME=$(uptime -p)
+VERSION_INFO=$(lsb_release -d)
+KERNAL_RELEASE=$(uname -r)
+LOGIN_SHELL=$SHELL
+PACK_INST=$(dpkg --list | wc --lines)
+MEMORY_LEFT=$(awk '/MemFree/ { printf "%.2f \n", $2/1024/1024 }' /proc/meminfo)
+MEMORY_USED=$(egrep "Cached" /proc/meminfo | awk 'FNR==1 {printf "%.2f\n", $2/1024/1024}')
+### Step 2 ###
+#Clear the screen using echo and clear
+#Use printf and color == green to return info in color
+
+/bin/clear
+
+NC="\e[0m"
+PURPLE="\e[35m"
+if [[ $varp != "" ]]; then
+  printf "        .--.    ${PURPLE}Host Name:         \t${NC}$HOST_NAME\n"
+  printf "       |o_o |   ${PURPLE}User Name:         \t${NC}$USER_NAME\n"
+  printf "       |:_/ |   ${PURPLE}Uptime:            \t${NC}${UPTIME:3}\n"
+  printf "      //   \ \  ${PURPLE}Version Info:      \t${NC}${VERSION_INFO:13}\n"
+  printf "     (|     | ) ${PURPLE}Kernal Release:    \t${NC}$KERNAL_RELEASE\n"
+  printf "    /'\_   _/\`\ ${PURPLE}Login Shell:       \t${NC}$LOGIN_SHELL\n"
+  printf "    \___)=(___/ ${PURPLE}Memory Available:  \t${NC}${MEMORY_LEFT}GiB\n"
+  printf "                ${PURPLE}Memory Used:       \t${NC}$MEMORY_USED GiB\n"
+  printf "                ${PURPLE}Packages Installed:\t${NC}$PACK_INST\n"
+else
+  printf "${PURPLE}Host Name:         \t${NC}$HOST_NAME\n"
+  printf "${PURPLE}User Name:         \t${NC}$USER_NAME\n"
+  printf "${PURPLE}Uptime:            \t${NC}${UPTIME:3}\n"
+  printf "${PURPLE}Version Info:      \t${NC}${VERSION_INFO:13}\n"
+  printf "${PURPLE}Kernal Release:    \t${NC}$KERNAL_RELEASE\n"
+  printf "${PURPLE}Login Shell:       \t${NC}${LOGIN_SHELL:5}\n"
+  printf "${PURPLE}Memory Available:  \t${NC}${MEMORY_LEFT}GiB\n"
+  printf "${PURPLE}Memory Used:       \t${NC}$MEMORY_USED GiB\n"
+  printf "${PURPLE}Packages Installed:\t${NC}$PACK_INST\n"
+fi
+### Step 3 ###
+#If -p has been selected return ascii tux

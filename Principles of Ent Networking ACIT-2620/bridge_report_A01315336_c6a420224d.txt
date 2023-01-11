@@ -1,0 +1,200 @@
+Bridge Report A01315336
+
+
+instr_rtr Info
+NIC 1:                       MAC: 080027876F1E
+ Attachment: NAT
+ Cable connected: on
+ Trace: off (file: none)
+ Type: virtio
+ Reported speed: 0 Mbps
+ Boot priority: 0
+ Promisc Policy: allow-all
+ Bandwidth group: none
+
+NIC 2:                       MAC: 08002788A400
+ Attachment: Host-only Interface 'VirtualBox Host-Only Ethernet Adapter #2'
+ Cable connected: on
+ Trace: off (file: none)
+ Type: virtio
+ Reported speed: 0 Mbps
+ Boot priority: 0
+ Promisc Policy: allow-all
+ Bandwidth group: none
+
+NIC 3:                       disabled
+
+NIC 4:                       disabled
+
+NIC 5:                       disabled
+
+NIC 6:                       disabled
+
+NIC 7:                       disabled
+
+NIC 8:                       disabled
+
+r1 Info
+NIC 1:                       MAC: 020000000001
+ Attachment: Host-only Interface 'VirtualBox Host-Only Ethernet Adapter #2'
+ Cable connected: on
+ Trace: off (file: none)
+ Type: virtio
+ Reported speed: 0 Mbps
+ Boot priority: 0
+ Promisc Policy: allow-all
+ Bandwidth group: none
+
+NIC 2:                       MAC: 0800278DFC1F
+ Attachment: Internal Network 'intnet1a'
+ Cable connected: on
+ Trace: off (file: none)
+ Type: virtio
+ Reported speed: 0 Mbps
+ Boot priority: 0
+ Promisc Policy: allow-all
+ Bandwidth group: none
+
+NIC 3:                       MAC: 08002755E641
+ Attachment: Internal Network 'intnet1b'
+ Cable connected: on
+ Trace: off (file: none)
+ Type: virtio
+ Reported speed: 0 Mbps
+ Boot priority: 0
+ Promisc Policy: allow-all
+ Bandwidth group: none
+
+NIC 4:                       disabled
+
+NIC 5:                       disabled
+
+NIC 6:                       disabled
+
+NIC 7:                       disabled
+
+NIC 8:                       disabled
+
+web Info
+NIC 1:                       MAC: 020000000003
+ Attachment: Internal Network 'intnet1a'
+ Cable connected: on
+ Trace: off (file: none)
+ Type: virtio
+ Reported speed: 0 Mbps
+ Boot priority: 0
+ Promisc Policy: allow-all
+ Bandwidth group: none
+
+NIC 2:                       disabled
+
+NIC 3:                       disabled
+
+NIC 4:                       disabled
+
+NIC 5:                       disabled
+
+NIC 6:                       disabled
+
+NIC 7:                       disabled
+
+NIC 8:                       disabled
+
+ws1 Info
+NIC 1:                       MAC: 020000000004
+ Attachment: Internal Network 'intnet1b'
+ Cable connected: on
+ Trace: off (file: none)
+ Type: virtio
+ Reported speed: 0 Mbps
+ Boot priority: 0
+ Promisc Policy: allow-all
+ Bandwidth group: none
+
+NIC 2:                       disabled
+
+NIC 3:                       disabled
+
+NIC 4:                       disabled
+
+NIC 5:                       disabled
+
+NIC 6:                       disabled
+
+NIC 7:                       disabled
+
+NIC 8:                       disabled
+
+r1 IPv4 Address
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+13: br0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    inet 10.20.30.100/24 brd 10.20.30.255 scope global dynamic noprefixroute br0
+       valid_lft 40944sec preferred_lft 40944sec
+
+
+r1 Bridge
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 master br0 state forwarding priority 32 cost 100 
+3: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 master br0 state forwarding priority 32 cost 100 
+
+
+r1 nmcli
+br0: connected to br0
+	"br0"
+	bridge, 02:00:00:00:00:01, sw, mtu 1500
+	ip4 default
+	inet4 10.20.30.100/24
+	route4 0.0.0.0/0
+	route4 10.20.30.0/24
+	inet6 fe80::4b3b:4c20:3f9d:cf8a/64
+	route6 fe80::/64
+	route6 ff00::/8
+
+enp0s3: connected to enp0s3
+	"Red Hat Virtio"
+	ethernet (virtio_net), 02:00:00:00:00:01, hw, mtu 1500
+	master br0
+
+enp0s8: connected to enp0s8
+	"Red Hat Virtio"
+	ethernet (virtio_net), 08:00:27:8D:FC:1F, hw, mtu 1500
+	master br0
+
+enp0s9: disconnected
+	"Red Hat Virtio"
+	ethernet (virtio_net), 08:00:27:55:E6:41, hw, mtu 1500
+
+lo: unmanaged
+	"lo"
+	loopback (unknown), 00:00:00:00:00:00, sw, mtu 65536
+
+DNS configuration:
+	servers: 8.8.8.8
+	domains: 2021.acit
+	interface: br0
+
+Use "nmcli device show" to get complete information about known devices and
+"nmcli connection show" to get an overview on active connection profiles.
+
+Consult nmcli(1) and nmcli-examples(7) manual pages for complete usage details.
+
+
+web IPv4 Address
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 10.20.30.1/24 brd 10.20.30.255 scope global dynamic noprefixroute enp0s3
+       valid_lft 40399sec preferred_lft 40399sec
+
+
+ws1 IPv4 Address
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 10.20.30.2/24 brd 10.20.30.255 scope global dynamic noprefixroute enp0s3
+       valid_lft 40388sec preferred_lft 40388sec
+
+UID:0xf44ee3d6b8bc
